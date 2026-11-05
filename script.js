@@ -1,0 +1,204 @@
+const INITIAL_DATA = [{"id":1,"code":"GRABFTGES","item":"Control","quantity":1,"status":"ใช้งาน","note":""},{"id":2,"code":"GRABFTGES","item":"Yeti","quantity":3,"status":"ใช้งาน","note":""},{"id":3,"code":"GRABFTGES","item":"HellfireGas","quantity":1,"status":"ใช้งาน","note":""},{"id":4,"code":"GRABFTGES","item":"Gas","quantity":1,"status":"ใช้งาน","note":""},{"id":5,"code":"GRABFTGES","item":"Venom","quantity":2,"status":"ใช้งาน","note":""},{"id":6,"code":"GRABFTGES","item":"Dough","quantity":2,"status":"ใช้งาน","note":""},{"id":7,"code":"GRABFTGES","item":"Lightning","quantity":3,"status":"ใช้งาน","note":""},{"id":8,"code":"GRABFTGES","item":"Portal","quantity":3,"status":"ใช้งาน","note":""},{"id":9,"code":"GRABFTGES","item":"Buddha","quantity":3,"status":"ใช้งาน","note":""},{"id":10,"code":"GRABFTGES","item":"Shadow","quantity":3,"status":"ใช้งาน","note":""},{"id":11,"code":"GRABFTGES","item":"T-Rex","quantity":3,"status":"ใช้งาน","note":""},{"id":12,"code":"GRABFTGES","item":"Mammoth","quantity":3,"status":"ใช้งาน","note":""},{"id":13,"code":"GRABFTGES","item":"Gravity","quantity":2,"status":"ใช้งาน","note":""},{"id":14,"code":"Mcmoodx1111","item":"Venom","quantity":1,"status":"ใช้งาน","note":""},{"id":15,"code":"Mcmoodx1111","item":"Lightning","quantity":1,"status":"ใช้งาน","note":""},{"id":16,"code":"Mcmoodx1111","item":"T-Rex","quantity":1,"status":"ใช้งาน","note":""},{"id":17,"code":"12y_090352","item":"Lightning","quantity":1,"status":"ใช้งาน","note":""},{"id":18,"code":"12y_090352","item":"Portal","quantity":1,"status":"ใช้งาน","note":""},{"id":19,"code":"12y_090352","item":"Buddha","quantity":1,"status":"ใช้งาน","note":""},{"id":20,"code":"12y_090352","item":"Shadow","quantity":1,"status":"ใช้งาน","note":""},{"id":21,"code":"12y_090352","item":"Mammoth","quantity":1,"status":"ใช้งาน","note":""},{"id":22,"code":"Mos5451s","item":"HellfireGas","quantity":1,"status":"ใช้งาน","note":""},{"id":23,"code":"Mos5451s","item":"Lightning","quantity":2,"status":"ใช้งาน","note":""},{"id":24,"code":"Mos5451s","item":"Portal","quantity":2,"status":"ใช้งาน","note":""},{"id":25,"code":"Mos5451s","item":"Buddha","quantity":2,"status":"ใช้งาน","note":""},{"id":26,"code":"Mos5451s","item":"Shadow","quantity":2,"status":"ใช้งาน","note":""},{"id":27,"code":"Mos5451s","item":"T-Rex","quantity":1,"status":"ใช้งาน","note":""},{"id":28,"code":"Mos5451s","item":"Mammoth","quantity":2,"status":"ใช้งาน","note":""},{"id":29,"code":"Mos5451s","item":"Gravity","quantity":1,"status":"ใช้งาน","note":""},{"id":30,"code":"MasXXASTPOCB","item":"Control","quantity":1,"status":"ใช้งาน","note":""},{"id":31,"code":"MasXXASTPOCB","item":"Lightning","quantity":1,"status":"ใช้งาน","note":""},{"id":32,"code":"MasXXASTPOCB","item":"Buddha","quantity":1,"status":"ใช้งาน","note":""},{"id":33,"code":"MasXXASTPOCB","item":"Shadow","quantity":1,"status":"ใช้งาน","note":""},{"id":34,"code":"MasXXASTPOCB","item":"Dough","quantity":1,"status":"ใช้งาน","note":""},{"id":35,"code":"MasXXASTPOCB","item":"T-Rex","quantity":1,"status":"ใช้งาน","note":""},{"id":36,"code":"MasXXASTPOCB","item":"Mammoth","quantity":1,"status":"ใช้งาน","note":""},{"id":37,"code":"pangScreen50","item":"Tiger","quantity":1,"status":"ใช้งาน","note":""},{"id":38,"code":"pangScreen50","item":"Lightning","quantity":1,"status":"ใช้งาน","note":""},{"id":39,"code":"pangScreen50","item":"Portal","quantity":1,"status":"ใช้งาน","note":""},{"id":40,"code":"pangScreen50","item":"Buddha","quantity":1,"status":"ใช้งาน","note":""},{"id":41,"code":"pangScreen50","item":"Shadow","quantity":1,"status":"ใช้งาน","note":""},{"id":42,"code":"pangScreen50","item":"T-Rex","quantity":1,"status":"ใช้งาน","note":""},{"id":43,"code":"ASTPOCB1","item":"HellfireGas","quantity":1,"status":"ใช้งาน","note":""},{"id":44,"code":"ASTPOCB1","item":"Lightning","quantity":1,"status":"ใช้งาน","note":""},{"id":45,"code":"ASTPOCB1","item":"Portal","quantity":1,"status":"ใช้งาน","note":""},{"id":46,"code":"ASTPOCB1","item":"Buddha","quantity":1,"status":"ใช้งาน","note":""},{"id":47,"code":"ASTPOCB1","item":"Mammoth","quantity":1,"status":"ใช้งาน","note":""},{"id":48,"code":"ASTPOCB1","item":"Gravity","quantity":1,"status":"ใช้งาน","note":""}];
+
+const SUPABASE_URL = "https://krkbmyeueuykfrhxhatl.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_O7Yv0O7-pkJlXeAMAcYALA_Hwz1yErM";
+const TABLE = "items";
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+let records = [];
+let nextId = 1;
+const $ = id => document.getElementById(id);
+
+function notify(msg, isError=false) {
+  $("notice").textContent = msg;
+  $("notice").style.display = "block";
+  $("notice").style.background = isError ? "#7f1d1d" : "#164e63";
+  $("notice").style.color = isError ? "#fee2e2" : "#cffafe";
+}
+function clearForm() {
+  $("itemForm").reset();
+  $("editId").value = "";
+  $("quantity").value = 1;
+  $("formTitle").textContent = "เพิ่มรายการใหม่";
+  $("saveBtn").textContent = "เพิ่มข้อมูล";
+}
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
+function render() {
+  const q = $("search").value.trim().toLowerCase();
+  let list = records.filter(r => (r.code+" "+r.item+" "+r.note).toLowerCase().includes(q));
+  const sort = $("sort").value;
+  if (sort==="code") list.sort((a,b)=>a.code.localeCompare(b.code));
+  else if (sort==="item") list.sort((a,b)=>a.item.localeCompare(b.item));
+  else if (sort==="qtyDesc") list.sort((a,b)=>b.quantity-a.quantity);
+  else if (sort==="qtyAsc") list.sort((a,b)=>a.quantity-b.quantity);
+  else list.sort((a,b)=>b.id-a.id);
+
+  $("totalRows").textContent = records.length;
+  $("totalCodes").textContent = new Set(records.map(r=>r.code.trim()).filter(Boolean)).size;
+  $("totalQty").textContent = records.reduce((n,r)=>n+r.quantity,0);
+  $("resultCount").textContent = `แสดง ${list.length} จาก ${records.length} รายการ`;
+  const tbody = $("tbody");
+  tbody.innerHTML = "";
+  if (!list.length) tbody.innerHTML = '<tr><td colspan="5" class="empty">ไม่พบข้อมูล</td></tr>';
+  for (const r of list) {
+    const tr = document.createElement("tr");
+    for (const val of [r.code,r.item,r.quantity,r.note]) {
+      const td = document.createElement("td"); td.textContent = val; tr.appendChild(td);
+    }
+    const td = document.createElement("td");
+    const edit = document.createElement("button");
+    edit.textContent = "แก้ไข"; edit.className = "secondary"; edit.style.marginRight = "6px";
+    edit.onclick = () => editRecord(r.id);
+    const del = document.createElement("button");
+    del.textContent = "ลบ"; del.className = "danger";
+    del.onclick = () => deleteRecord(r.id);
+    td.append(edit,del); tr.appendChild(td); tbody.appendChild(tr);
+  }
+
+  const names = [...new Set(records.map(r=>r.item).filter(Boolean))].sort();
+  $("itemNames").innerHTML = names.map(n=>`<option value="${escapeHtml(n)}"></option>`).join("");
+  const codes = [...new Set(records.map(r=>r.code).filter(Boolean))].sort();
+  $("codeNames").innerHTML = codes.map(c=>`<option value="${escapeHtml(c)}"></option>`).join("");
+
+  let unique = [...new Set(records.map(r=>r.item.trim()).filter(Boolean))].map(name => {
+    const matches = records.filter(r=>r.item.trim().toLowerCase()===name.toLowerCase());
+    return {name, quantity:matches.reduce((sum,r)=>sum+r.quantity,0), codes:new Set(matches.map(r=>r.code.trim()).filter(Boolean)).size};
+  });
+  const uq = ($("uniqueSearch")?.value||"").trim().toLowerCase();
+  unique = unique.filter(x=>x.name.toLowerCase().includes(uq));
+  const us = $("uniqueSort")?.value||"name";
+  if (us==="qtyDesc") unique.sort((a,b)=>b.quantity-a.quantity);
+  else if (us==="qtyAsc") unique.sort((a,b)=>a.quantity-b.quantity);
+  else if (us==="codesDesc") unique.sort((a,b)=>b.codes-a.codes);
+  else unique.sort((a,b)=>a.name.localeCompare(b.name));
+  const ut = $("uniqueTbody");
+  ut.innerHTML = "";
+  if (!unique.length) ut.innerHTML = '<tr><td colspan="3" class="empty">ไม่พบไอเทม</td></tr>';
+  unique.forEach(x=>{
+    const tr=document.createElement("tr");
+    [x.name,x.quantity,x.codes].forEach(v=>{const td=document.createElement("td");td.textContent=v;tr.appendChild(td);});
+    ut.appendChild(tr);
+  });
+  $("uniqueCount").textContent = `แสดง ${unique.length} ชื่อ จากไอเทมที่ไม่ซ้ำกันทั้งหมด ${new Set(records.map(r=>r.item.trim().toLowerCase()).filter(Boolean)).size} ชื่อ`;
+}
+
+async function loadRecords() {
+  notify("กำลังเชื่อมต่อ Supabase...");
+  const {data,error} = await supabaseClient.from(TABLE).select("*").order("id",{ascending:false});
+  if (error) throw error;
+  if ((!data || data.length===0) && INITIAL_DATA.length) {
+    const seed = INITIAL_DATA.map(r=>({code:String(r.code||""),item:String(r.item||""),quantity:Number(r.quantity)||0,note:String(r.note||"")}));
+    const seeded = await supabaseClient.from(TABLE).insert(seed);
+    if (seeded.error) throw seeded.error;
+    const refreshed = await supabaseClient.from(TABLE).select("*").order("id",{ascending:false});
+    if (refreshed.error) throw refreshed.error;
+    records = (refreshed.data||[]).map(r=>({id:Number(r.id),code:String(r.code||""),item:String(r.item||""),quantity:Number(r.quantity)||0,note:String(r.note||"")}));
+  } else {
+    records = (data||[]).map(r=>({id:Number(r.id),code:String(r.code||""),item:String(r.item||""),quantity:Number(r.quantity)||0,status:String(r.status||"ใช้งาน"),note:String(r.note||"")}));
+  }
+  nextId = Math.max(0,...records.map(r=>r.id))+1;
+  render();
+  notify(`เชื่อมต่อ Supabase สำเร็จ • ${records.length} รายการ`);
+}
+
+function editRecord(id) {
+  const r=records.find(x=>x.id===id); if(!r)return;
+  $("editId").value=r.id; $("code").value=r.code; $("item").value=r.item;
+  $("quantity").value=r.quantity; $("note").value=r.note;
+  $("formTitle").textContent="แก้ไขรายการ"; $("saveBtn").textContent="บันทึกการแก้ไข";
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+async function deleteRecord(id) {
+  const r=records.find(x=>x.id===id); if(!r)return;
+  if(!confirm(`ยืนยันลบ ${r.item} (${r.code}) จำนวน ${r.quantity} ใช่หรือไม่?`))return;
+  const {error}=await supabaseClient.from(TABLE).delete().eq("id",id);
+  if(error){notify("ลบไม่สำเร็จ: "+error.message,true);return;}
+  records=records.filter(x=>x.id!==id); render(); notify("ลบรายการจาก Supabase แล้ว");
+  if(Number($("editId").value)===id)clearForm();
+}
+
+$("itemForm").addEventListener("submit", async e => {
+  e.preventDefault();
+  const id = $("editId").value;
+  const entry = {
+    code: $("code").value.trim(),
+    item: $("item").value.trim(),
+    quantity: Number($("quantity").value),
+    note: $("note").value.trim()
+  };
+  if (!entry.code || !entry.item || !Number.isInteger(entry.quantity) || entry.quantity < 0) {
+    notify("กรุณาตรวจสอบข้อมูลให้ครบถ้วน", true);
+    return;
+  }
+  $("saveBtn").disabled = true;
+  try {
+    let result;
+    if (id) {
+      result = await supabaseClient.from("items").update(entry).eq("id", Number(id));
+    } else {
+      result = await supabaseClient.from("items").insert({...entry,status:"ใช้งาน"});
+    }
+    if (result.error) throw result.error;
+    const {data,error} = await supabaseClient.from("items").select("*").order("id",{ascending:false});
+    if (error) throw error;
+    records = data.map(r=>({id:Number(r.id),code:String(r.code||""),item:String(r.item||""),quantity:Number(r.quantity)||0,status:String(r.status||"ใช้งาน"),note:String(r.note||"")}));
+    if (id) {
+      const updated = records.find(r=>r.id===Number(id)&&r.code===entry.code&&r.item===entry.item&&r.quantity===entry.quantity&&r.note===entry.note);
+      if (!updated) throw new Error("แก้ไขไม่สำเร็จ กรุณาตรวจสอบสิทธิ์ RLS");
+    }
+    nextId = Math.max(0,...records.map(r=>r.id))+1;
+    render();
+    clearForm();
+    notify(id ? "แก้ไขข้อมูลสำเร็จ" : "เพิ่มข้อมูลสำเร็จ");
+  } catch (err) {
+    console.error(err);
+    notify("บันทึกไม่สำเร็จ: "+err.message,true);
+  } finally {
+    $("saveBtn").disabled = false;
+  }
+});
+
+$("clearBtn").onclick=clearForm;
+$("search").addEventListener("input",render);
+$("sort").addEventListener("change",render);
+$("uniqueSearch").addEventListener("input",render);
+$("uniqueSort").addEventListener("change",render);
+$("exportBtn").onclick=()=>download("database-ไอเทม.json",JSON.stringify(records,null,2),"application/json;charset=utf-8");
+$("exportCsvBtn").onclick=()=>{
+  const rows=[["รหัส","ไอเทม","จำนวน","หมายเหตุ"],...records.map(r=>[r.code,r.item,r.quantity,r.note])];
+  const csv="\uFEFF"+rows.map(row=>row.map(v=>`"${String(v).replace(/"/g,'""')}"`).join(",")).join("\r\n");
+  download("database-ไอเทม.csv",csv,"text/csv;charset=utf-8");
+};
+function download(name,content,type){
+  const a=document.createElement("a");const url=URL.createObjectURL(new Blob([content],{type}));
+  a.href=url;a.download=name;a.click();URL.revokeObjectURL(url);
+}
+$("importBtn").onclick=()=>$("importFile").click();
+$("importFile").onchange=async e=>{
+  const file=e.target.files[0];if(!file)return;
+  try {
+    const incoming=JSON.parse(await file.text());
+    if(!Array.isArray(incoming))throw Error("รูปแบบไฟล์ไม่ถูกต้อง");
+    if(confirm(`นำเข้าข้อมูล ${incoming.length} รายการและแทนที่ข้อมูลทั้งหมดใน Supabase หรือไม่?`)){
+      const clean=incoming.map(r=>({code:String(r.code||""),item:String(r.item||""),quantity:Number(r.quantity)||0,status:String(r.status||"ใช้งาน"),note:String(r.note||r.หมายเหตุ||"")}));
+      if(clean.some(r=>!r.code||!r.item||!Number.isInteger(r.quantity)||r.quantity<0))throw Error("พบข้อมูลที่ไม่ถูกต้อง");
+      const del=await supabaseClient.from(TABLE).delete().not("id","is",null);
+      if(del.error)throw del.error;
+      if(clean.length){
+        const ins=await supabaseClient.from(TABLE).insert(clean);
+        if(ins.error)throw ins.error;
+      }
+      await loadRecords();clearForm();notify("นำเข้าข้อมูลลง Supabase สำเร็จ");
+    }
+  } catch(err){notify("นำเข้าไม่สำเร็จ: "+err.message,true);}
+  e.target.value="";
+};
+document.querySelectorAll(".tab").forEach(btn=>btn.addEventListener("click",()=>{
+  document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("active",b===btn));
+  document.querySelectorAll(".page").forEach(page=>page.classList.toggle("active",page.id===btn.dataset.page));
+}));
+loadRecords().catch(err=>{
+  console.error(err);
+  notify("เชื่อมต่อ Supabase ไม่สำเร็จ: "+err.message+" • ตรวจสอบชื่อคอลัมน์และสิทธิ์ RLS ของตาราง public.items",true);
+});
