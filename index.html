@@ -4,145 +4,155 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="style.css">
 <title>เช็คผลในรหัส</title>
+<link rel="icon" type="image/png" href="logo.png">
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <header>
   <div class="header-brand">
     <img src="logo.png" alt="Logo" class="site-logo">
-    <div>
-      <h1>เช็คผลในรหัส</h1>
-      <p>จัดการข้อมูลและดูสรุปไอเทมในเว็บเดียว</p>
-    </div>
+    <h1>เช็คผลในรหัส</h1>
   </div>
+  <p>จัดการข้อมูลและดูสรุปไอเทมในเว็บเดียว</p>
 </header>
 
 <nav class="tabbar" aria-label="เมนูหลัก">
- <button type="button" class="tab active" data-page="managePage">จัดการไอเทม</button>
- <button type="button" class="tab" data-page="tablePage">ตารางไอเทม</button>
+  <button type="button" class="tab active" data-page="managePage">จัดการไอเทม</button>
+  <button type="button" class="tab" data-page="tablePage">ตารางไอเทม</button>
 </nav>
 
 <main>
 <section id="managePage" class="page active">
+
 <div class="cards">
- <div class="card"><div class="label">จำนวนรายการ</div><div class="metric" id="totalRows">0</div></div>
- <div class="card"><div class="label">จำนวนรหัสไม่ซ้ำ</div><div class="metric" id="totalCodes">0</div></div>
- <div class="card"><div class="label">จำนวนไอเทมรวม</div><div class="metric" id="totalQty">0</div></div>
+  <div class="card">
+    <div class="label">จำนวนรายการ</div>
+    <div class="metric" id="totalRows">0</div>
+  </div>
+  <div class="card">
+    <div class="label">จำนวนรหัสไม่ซ้ำ</div>
+    <div class="metric" id="totalCodes">0</div>
+  </div>
+  <div class="card">
+    <div class="label">จำนวนไอเทมรวม</div>
+    <div class="metric" id="totalQty">0</div>
+  </div>
 </div>
 
 <div id="notice"></div>
 
 <div class="layout">
 <section class="panel">
-<h2 id="formTitle">เพิ่มรายการใหม่</h2>
+  <h2 id="formTitle">เพิ่มรายการใหม่</h2>
 
-<form id="itemForm">
-<input id="editId" type="hidden">
+  <form id="itemForm">
+    <input id="editId" type="hidden">
 
-<label for="code">รหัส (เลือกจากรายการหรือพิมพ์รหัสใหม่)</label>
-<input id="code" required list="codeNames" placeholder="เลือกหรือพิมพ์รหัส...">
-<datalist id="codeNames"></datalist>
+    <label for="code">รหัส (เลือกจากรายการหรือพิมพ์รหัสใหม่)</label>
+    <input id="code" required list="codeNames" placeholder="เลือกหรือพิมพ์รหัส...">
+    <datalist id="codeNames"></datalist>
 
-<label for="item">ชื่อไอเทม</label>
-<input id="item" required list="itemNames" placeholder="เช่น Control">
-<datalist id="itemNames"></datalist>
+    <label for="item">ชื่อไอเทม</label>
+    <input id="item" required list="itemNames" placeholder="เช่น Control">
+    <datalist id="itemNames"></datalist>
 
-<label for="quantity">จำนวน</label>
-<input id="quantity" type="number" min="0" step="1" value="1" required>
+    <label for="quantity">จำนวน</label>
+    <input id="quantity" type="number" min="0" step="1" value="1" required>
 
-<label for="note">หมายเหตุ (ไม่บังคับ)</label>
-<input id="note" placeholder="หมายเหตุเพิ่มเติม">
+    <label for="note">หมายเหตุ (ไม่บังคับ)</label>
+    <input id="note" placeholder="หมายเหตุเพิ่มเติม">
 
-<div class="actions">
-<button type="submit" id="saveBtn">เพิ่มข้อมูล</button>
-<button type="button" class="secondary" id="clearBtn">ล้างฟอร์ม</button>
-</div>
-</form>
+    <div class="actions">
+      <button type="submit" id="saveBtn">เพิ่มข้อมูล</button>
+      <button type="button" class="secondary" id="clearBtn">ล้างฟอร์ม</button>
+    </div>
+  </form>
 
-<hr style="border:0;border-top:1px solid #293956;margin:18px 0">
+  <hr class="section-line">
 
-<h2>สำรอง / ย้ายข้อมูล</h2>
-<div class="actions">
-<button class="good" id="exportBtn">ส่งออก JSON</button>
-<button class="secondary" id="exportCsvBtn">ส่งออก CSV</button>
-<button class="secondary" id="importBtn">นำเข้า JSON</button>
-<input id="importFile" type="file" accept=".json,application/json" hidden>
-</div>
+  <h2>สำรอง / ย้ายข้อมูล</h2>
 
-<p class="small">ข้อมูลบันทึกลงตาราง public.items ที่มีอยู่ใน Supabase และซิงก์ข้ามอุปกรณ์</p>
+  <div class="actions">
+    <button class="good" id="exportBtn">ส่งออก JSON</button>
+    <button class="secondary" id="exportCsvBtn">ส่งออก CSV</button>
+    <button class="secondary" id="importBtn">นำเข้า JSON</button>
+    <input id="importFile" type="file" accept=".json,application/json" hidden>
+  </div>
+
+  <p class="small">ข้อมูลบันทึกลงตาราง public.items ที่มีอยู่ใน Supabase และซิงก์ข้ามอุปกรณ์</p>
 </section>
 
 <section class="panel">
-<h2>ค้นหาและรายการข้อมูล</h2>
+  <h2>ค้นหาและรายการข้อมูล</h2>
 
-<div class="toolbar">
-<input id="search" placeholder="ค้นหาจากรหัสหรือชื่อไอเทม...">
-<select id="sort">
-<option value="newest">เรียง: ล่าสุด</option>
-<option value="code">เรียง: รหัส A–Z</option>
-<option value="item">เรียง: ไอเทม A–Z</option>
-<option value="qtyDesc">เรียง: จำนวนมากไปน้อย</option>
-<option value="qtyAsc">เรียง: จำนวนน้อยไปมาก</option>
-</select>
-</div>
+  <div class="toolbar">
+    <input id="search" placeholder="ค้นหาจากรหัสหรือชื่อไอเทม...">
+    <select id="sort">
+      <option value="newest">เรียง: ล่าสุด</option>
+      <option value="code">เรียง: รหัส A–Z</option>
+      <option value="item">เรียง: ไอเทม A–Z</option>
+      <option value="qtyDesc">เรียง: จำนวนมากไปน้อย</option>
+      <option value="qtyAsc">เรียง: จำนวนน้อยไปมาก</option>
+    </select>
+  </div>
 
-<div class="tablewrap">
-<table>
-<thead>
-<tr>
-<th>รหัส</th>
-<th>ไอเทม</th>
-<th>จำนวน</th>
-<th>หมายเหตุ</th>
-<th>จัดการ</th>
-</tr>
-</thead>
-<tbody id="tbody"></tbody>
-</table>
-</div>
-<p class="small" id="resultCount"></p>
+  <div class="tablewrap">
+    <table>
+      <thead>
+        <tr>
+          <th>รหัส</th>
+          <th>ไอเทม</th>
+          <th>จำนวน</th>
+          <th>หมายเหตุ</th>
+          <th>จัดการ</th>
+        </tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
+  </div>
+  <p class="small" id="resultCount"></p>
 </section>
 </div>
 </section>
 
 <section id="tablePage" class="page">
-<div class="panel" style="margin-bottom:16px">
+<div class="panel">
 
-<h2>ไอเทมทั้งหมด (ไม่ซ้ำกัน)</h2>
-<p class="small">รวบรวมชื่อไอเทมที่มีอยู่ทั้งหมด โดยแสดงแต่ละชื่อเพียงครั้งเดียว พร้อมจำนวนรวมและจำนวนรหัสที่มีไอเทมนั้น</p>
+  <h2>ไอเทมทั้งหมด (ไม่ซ้ำกัน)</h2>
+  <p class="small">รวบรวมชื่อไอเทมที่มีอยู่ทั้งหมด โดยแสดงแต่ละชื่อเพียงครั้งเดียว พร้อมจำนวนรวมและจำนวนรหัสที่มีไอเทมนั้น</p>
 
-<div class="toolbar">
-<input id="uniqueSearch" placeholder="ค้นหาในรายการไอเทมทั้งหมด...">
-<select id="uniqueSort">
-<option value="name">เรียงชื่อ A–Z</option>
-<option value="qtyDesc">จำนวนรวมมากไปน้อย</option>
-<option value="qtyAsc">จำนวนรวมน้อยไปมาก</option>
-<option value="codesDesc">จำนวนรหัสมากไปน้อย</option>
-</select>
-</div>
+  <div class="toolbar">
+    <input id="uniqueSearch" placeholder="ค้นหาในรายการไอเทมทั้งหมด...">
+    <select id="uniqueSort">
+      <option value="name">เรียงชื่อ A–Z</option>
+      <option value="qtyDesc">จำนวนรวมมากไปน้อย</option>
+      <option value="qtyAsc">จำนวนรวมน้อยไปมาก</option>
+      <option value="codesDesc">จำนวนรหัสมากไปน้อย</option>
+    </select>
+  </div>
 
-<div class="tablewrap">
-<table>
-<thead>
-<tr>
-<th>ชื่อไอเทม</th>
-<th>จำนวนรวม</th>
-<th>จำนวนรหัสที่มี</th>
-</tr>
-</thead>
-<tbody id="uniqueTbody"></tbody>
-</table>
-</div>
-<p class="small" id="uniqueCount"></p>
+  <div class="tablewrap">
+    <table>
+      <thead>
+        <tr>
+          <th>ชื่อไอเทม</th>
+          <th>จำนวนรวม</th>
+          <th>จำนวนรหัสที่มี</th>
+        </tr>
+      </thead>
+      <tbody id="uniqueTbody"></tbody>
+    </table>
+  </div>
+  <p class="small" id="uniqueCount"></p>
 
 </div>
 </section>
 </main>
 
 <footer>
-เริ่มต้นด้วยข้อมูลจากไฟล์ Excel ที่ให้มา • ใช้ตาราง public.items ใน Supabase • การเพิ่ม แก้ไข และลบจะเปลี่ยนข้อมูลบนเซิร์ฟเวอร์
+  เริ่มต้นด้วยข้อมูลจากไฟล์ Excel ที่ให้มา • ใช้ตาราง public.items ใน Supabase • การเพิ่ม แก้ไข และลบจะเปลี่ยนข้อมูลบนเซิร์ฟเวอร์
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -154,6 +164,7 @@ const SUPABASE_URL = "https://krkbmyeueuykfrhxhatl.supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_O7Yv0O7-pkJlXeAMAcYALA_Hwz1yErM";
 const TABLE = "items";
 const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
 let records = [];
 let nextId = 1;
 const $ = id => document.getElementById(id);
@@ -369,26 +380,17 @@ $("itemForm").addEventListener("submit", async e => {
     let result;
 
     if (id) {
-      result = await supabaseClient
-        .from(TABLE)
-        .update(entry)
-        .eq("id", Number(id));
+      result = await supabaseClient.from(TABLE).update(entry).eq("id", Number(id));
     } else {
-      result = await supabaseClient
-        .from(TABLE)
-        .insert({
-          ...entry,
-          status: "ใช้งาน"
-        });
+      result = await supabaseClient.from(TABLE).insert({
+        ...entry,
+        status: "ใช้งาน"
+      });
     }
 
     if (result.error) throw result.error;
 
-    const { data, error } = await supabaseClient
-      .from(TABLE)
-      .select("*")
-      .order("id", { ascending: false });
-
+    const { data, error } = await supabaseClient.from(TABLE).select("*").order("id", { ascending: false });
     if (error) throw error;
 
     records = data.map(r => ({
@@ -409,9 +411,7 @@ $("itemForm").addEventListener("submit", async e => {
         r.note === entry.note
       );
 
-      if (!updated) {
-        throw new Error("แก้ไขไม่สำเร็จ กรุณาตรวจสอบสิทธิ์ RLS");
-      }
+      if (!updated) throw new Error("แก้ไขไม่สำเร็จ กรุณาตรวจสอบสิทธิ์ RLS");
     }
 
     nextId = Math.max(0, ...records.map(r => r.id)) + 1;
