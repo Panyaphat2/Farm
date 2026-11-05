@@ -8,30 +8,10 @@
       <p>จัดการข้อมูลและดูสรุปไอเทมในเว็บเดียว</p>
     </div>
   </div>
-:root{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:#eaf0ff;background:#0b1020}
-*{box-sizing:border-box}body{margin:0;background:linear-gradient(135deg,#0b1020,#121b32);min-height:100vh}
-header{padding:24px max(16px,calc((100vw - 1180px)/2));background:#111a30;border-bottom:1px solid #273653}
-h1{margin:0;font-size:clamp(22px,4vw,32px)}header p{margin:8px 0 0;color:#9fb0d0}
-.tabbar{display:flex;gap:8px;max-width:1180px;margin:18px auto 0;padding:0 16px}
-.tab{background:#1b2a47;color:#b9c8e4;border:1px solid #354765;padding:11px 18px}
-.tab.active{background:#2563eb;color:#fff;border-color:#60a5fa}
-.page{display:none}.page.active{display:block}
-main{max-width:1180px;margin:22px auto;padding:0 16px}
-.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:18px}.card,.panel{background:#141e35;border:1px solid #293956;border-radius:14px;padding:16px}
-.metric{font-size:28px;font-weight:800;color:#67e8f9}.label{font-size:13px;color:#9fb0d0}
-.layout{display:grid;grid-template-columns:1fr 1.5fr;gap:16px}.panel h2{font-size:18px;margin:0 0 14px}
-label{display:block;font-size:13px;color:#aab9d5;margin:10px 0 5px}
-input,select,button{font:inherit;border-radius:9px;border:1px solid #354765;padding:10px 12px}
-input,select{width:100%;background:#0d1528;color:#f5f7ff}button{cursor:pointer;background:#2563eb;color:white;border:0;font-weight:650}
-button:hover{filter:brightness(1.12)}button.secondary{background:#293956}button.danger{background:#b91c1c}button.good{background:#047857}
-.actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}.toolbar{display:grid;grid-template-columns:1fr 160px;gap:10px;margin-bottom:12px}
-.tablewrap{overflow:auto;border-radius:10px;border:1px solid #293956}table{border-collapse:collapse;width:100%;min-width:650px;background:#0e172b}th,td{padding:10px 12px;border-bottom:1px solid #263550;text-align:left;font-size:14px}th{background:#1b2a47;color:#cfe0ff;position:sticky;top:0}tr:hover td{background:#172440}.pill{padding:3px 8px;border-radius:20px;background:#164e63;color:#a5f3fc;font-size:12px}
-.small{font-size:12px;color:#9fb0d0;line-height:1.5}.empty{text-align:center;padding:24px;color:#9fb0d0}
-#notice{margin:12px 0;padding:10px 12px;border-radius:8px;display:none;background:#164e63;color:#cffafe}
-footer{max-width:1180px;margin:18px auto;padding:0 16px 24px;color:#8394b5;font-size:12px}
-@media(max-width:850px){.layout{grid-template-columns:1fr}.cards{grid-template-columns:1fr 1fr}.cards .card:last-child{grid-column:span 2}.toolbar{grid-template-columns:1fr 130px}}
-</style>
+  <link rel="stylesheet" href="styles.css">
 </head>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="script.js"></script>
 <body>
 <header><h1>ระบบค้นหาและจัดการไอเทม</h1><p>จัดการข้อมูลและดูสรุปไอเทมในเว็บเดียว</p></header>
 <nav class="tabbar" aria-label="เมนูหลัก">
