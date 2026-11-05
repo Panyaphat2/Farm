@@ -208,23 +208,90 @@ async function deleteRecord(id) {
   if(Number($("editId").value)===id)clearForm();
 }
 
-$("itemForm").addEventListener("submit",async e=>{
-  e.preventDefault();
-  const id=$("editId").value;
-  const entry={code:$("code").value.trim(),item:$("item").value.trim(),quantity:Number($("quantity").value),note:$("note").value.trim()};
-  if(!entry.code||!entry.item||!Number.isInteger(entry.quantity)||entry.quantity<0){notify("กรุณาตรวจสอบข้อมูลให้ครบถ้วน",true);return;}
-  $("saveBtn").disabled=true;
-  try {
-    let result;
-    if(id) result=await supabaseClient.from(TABLE).update(entry).eq("id",Number(id)).select().single();
-    else result=await supabaseClient.from(TABLE).insert({...entry,status:"ใช้งาน"}).select().single();
-    if(result.error)throw result.error;
-    const saved={id:Number(result.data.id),...entry,status:String(result.data.status||"ใช้งาน")};
-    if(id)records=records.map(r=>r.id===Number(id)?saved:r);
-    else records.push(saved);
-    render(); clearForm(); notify(id?"บันทึกการแก้ไขลง Supabase แล้ว":"เพิ่มข้อมูลลง Supabase แล้ว");
-  } catch(err) { notify("บันทึกไม่สำเร็จ: "+err.message,true); }
-  finally {$("saveBtn").disabled=false;}
+$("itemForm").addEventListener("submit", async e => {
+    e.preventDefault();
+
+    const id = $("editId").value;
+
+    const entry = {
+        code: $("code").value.trim(),
+        item: $("item").value.trim(),
+        quantity: Number($("quantity").value),
+        note: $("note").value.trim()
+    };
+
+    if (!entry.code || !entry.item ||
+        !Number.isInteger(entry.quantity) ||
+        entry.quantity < 0) {
+        notify("กรุณาตรวจสอบข้อมูลให้ครบถ้วน", true);
+        return;
+    }
+
+    $("saveBtn").disabled = true;
+
+    try {
+        let result;
+
+        if (id) {
+            result = await supabaseClient
+                .from("items")
+                .update(entry)
+                .eq("id", Number(id));
+        } else {
+            result = await supabaseClient
+                .from("items")
+                .insert({
+                    ...entry,
+                    status: "ใช้งาน"
+                });
+        }
+
+        if (result.error) throw result.error;
+
+        const { data, error } = await supabaseClient
+            .from("items")
+            .select("*")
+            .order("id", { ascending: false });
+
+        if (error) throw error;
+
+        records = data.map(r => ({
+            id: Number(r.id),
+            code: String(r.code || ""),
+            item: String(r.item || ""),
+            quantity: Number(r.quantity) || 0,
+            status: String(r.status || "ใช้งาน"),
+            note: String(r.note || "")
+        }));
+
+        if (id) {
+            const updated = records.find(r =>
+                r.id === Number(id) &&
+                r.code === entry.code &&
+                r.item === entry.item &&
+                r.quantity === entry.quantity &&
+                r.note === entry.note
+            );
+
+            if (!updated) {
+                throw new Error("แก้ไขไม่สำเร็จ กรุณาตรวจสอบสิทธิ์ RLS");
+            }
+        }
+
+        nextId = Math.max(0, ...records.map(r => r.id)) + 1;
+
+        render();
+        clearForm();
+
+        notify(id ? "แก้ไขข้อมูลสำเร็จ" : "เพิ่มข้อมูลสำเร็จ");
+
+    } catch (err) {
+        console.error(err);
+        notify("บันทึกไม่สำเร็จ: " + err.message, true);
+
+    } finally {
+        $("saveBtn").disabled = false;
+    }
 });
 
 $("clearBtn").onclick=clearForm;
